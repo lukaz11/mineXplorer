@@ -1,0 +1,27 @@
+.gamefield{
+    display: grid;
+    // gap:2px 2px;
+    row-gap: 2px;
+    max-width: 90vh;
+    max-height: 90vh;
+}
+.inner-field{
+    border-radius: 3px;
+    border:solid black 1px;
+    font-size: x-large;
+    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    // padding: 50%;
+    // resize: none;
+}
+.inner-field:hover{
+
+    cursor: pointer;
+}
+// .container{
+//     max-width: 100vh;
+//     max-height: 100vh;
+// }

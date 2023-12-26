@@ -1,0 +1,47 @@
+<app-navbar></app-navbar>
+<div class="container">
+    <form #gameForm ngForm name="form1" (ngSubmit)="onSubmit(gameForm)">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="difficulty">difficulty</label>
+                <select id="difficulty" class="form-control" [(ngModel)]="option" name="option">
+                    <option>Leicht</option>
+                    <option selected>Mittel</option>
+                    <option>Schwer</option>
+                    <option>Custom</option>
+                </select>
+            </div>
+            @if (option==='Custom'){
+                <div class="form-group col-md-4">
+                    <input class="form-control" type="number" placeholder="Minen" [(ngModel)]="mine" name="mine">
+                    <input class="form-control" type="number" placeholder="Reihen" [(ngModel)]="row" name="row">
+                    <input class="form-control" type="number" placeholder="Spalten" [(ngModel)]="column" name="column">
+                </div>
+            }
+        </div>
+        <button type="submit" class="btn btn-primary">Start</button>
+    </form>
+</div>
+<div class="container">
+    <div class="gamefield" [ngStyle]="getRows()">
+
+        @for(x of (loopArray(0,column,1));track x;let j=$index){
+            <div class="field-row">
+                @for(y of (loopArray(0,row,1));track y;let i=$index){
+                <div class="inner-field" (click)="clickField(i,j)" (contextmenu)="setFlag($event,i,j)" id="{{calculateId(i,j)}}">
+
+                            <!-- row: {{i}},&NewLine;
+                            column: {{j}},&NewLine;
+                            mine: {{logMine(i,j)}},&NewLine;
+                            status: {{logStatus(i,j)}},&NewLine;
+                            MinesNearby: {{logMinesNearby(i,j)}} -->
+                            <!-- @if(logStatus(i,j)==='uncovered'){
+                                MinesNearby: {{logMinesNearby(i,j)}}
+                            } -->
+                    </div>
+                }
+            </div>
+        }
+
+</div>
+</div>
