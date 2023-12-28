@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms'
 import { Gamelogic } from '../../classes/gamelogic';
+import { MatDialog } from '@angular/material/dialog';
+import { ResultComponent } from '../result/result.component';
 
 @Component({
   selector: 'app-game-launcher',
@@ -13,7 +14,12 @@ export class GameLauncherComponent {
   row: number = 15;
   column: number = 15;
   gamewon: boolean = false;
-  option: 'Leicht' | 'Mittel' | 'Schwer' | 'Custom' = 'Mittel'
+  activeGame:boolean=false;
+  option: 'Leicht' | 'Mittel' | 'Schwer' | 'Custom' = 'Mittel';
+
+  constructor(private dialog: MatDialog) {
+
+  }
 
   //Create iterable for "for directive"
 
@@ -33,7 +39,9 @@ export class GameLauncherComponent {
         flag.classList.add("bi")
         flag.classList.add("bi-flag")
         event.currentTarget.appendChild(flag)
-        // event.currentTarget.innerHTML="flag"
+        if(this.game?.checkwinner()){
+          this.openDialog(true);
+        }
         break
       }
       case ('remove'): {
@@ -41,23 +49,16 @@ export class GameLauncherComponent {
 
       }
     }
-    // if (this.game?.flagField(x, y) === 'add') {
-    //   console.log('in add')
-    //   event.currentTarget.innerHTML = "Flag";
-    // }
-    // if (this.game?.flagField(x, y) === 'remove') {
-    //   event.currentTarget.innerHTML = "";
-    // }
   }
 
   clickField(x: number, y: number) {
     this.addFieldNumber(x, y);
     if (this.game?.checkwinner()) {
-      console.log("We have a winner")
+      this.openDialog(true);
     }
   }
 
-  //
+  // Anzeigen der benachbarten Elemente im Feld
 
   addFieldNumber(x: number, y: number) {
     if (this.game?.gamefield[x][y].status === 'covered') {
@@ -67,16 +68,10 @@ export class GameLauncherComponent {
       }
       let id: string = this.calculateId(x, y).toString();
       let el = document.getElementById(id)
-      // document.getElementById(id).innerHTML+=this.game?.getNearbyMines(x, y)
       if ((el !== undefined) && (el !== null) && (this.game?.getNearbyMines(x, y) !== undefined)) {
         el.innerHTML = this.game?.getNearbyMines(x, y).toString();
 
       }
-      // event.currentTarget.innerHTML = this.game?.getNearbyMines(x, y);
-      // console.log(event.currentTarget.getAttribute('id'));
-      // console.log('id', this.calculateId(x,y))
-
-      // Problem: current Target funktioniert nicht
 
       if (this.game?.getNearbyMines(x, y) === 0) {
         for (let i = 0; i < this.game?.testcases.length; i++) {
@@ -95,7 +90,8 @@ export class GameLauncherComponent {
   checkGameEnd(x: number, y: number): boolean {
     if (this.game?.getMine(x, y)) {
       this.gameOver();
-      this.revealField()
+      this.revealField();
+      this.openDialog(false);
       return true;
     }
     else {
@@ -106,6 +102,23 @@ export class GameLauncherComponent {
   gameOver() {
     console.log("Gameover, you clicked on a mine");
   }
+
+  openDialog(gameWin:boolean) {
+    const dialogRef = this.dialog.open(ResultComponent,{
+      width:'40%',
+      height:'25%',
+      data:{
+        win:gameWin
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.restartGame()
+      }
+    });
+  }
+
+  // Wenn das Spiel verloren wurde, deckt alle Felder auf
 
   revealField() {
     const mine = document.createElement("i")
@@ -118,7 +131,7 @@ export class GameLauncherComponent {
           let el = document.getElementById(id)
           if (this.game?.getMine(i, j)) {
             // console.log('in Mine', el)
-            var newMine=mine.cloneNode(true)
+            var newMine = mine.cloneNode(true)
             el?.appendChild(newMine)
           }
           else {
@@ -139,25 +152,39 @@ export class GameLauncherComponent {
     console.log(form)
     if (this.option !== 'Custom') {
       if (this.option === 'Leicht') {
-        this.mine = 6;
-        this.row = 10;
-        this.column = 10
+        this.mine = 10;
+        this.row = 9;
+        this.column = 9
       }
       else if (this.option === 'Mittel') {
-        this.mine = 10;
-        this.row = 15
-        this.column = 15
+        this.mine = 40;
+        this.row = 16
+        this.column = 16
       }
       else {
-        this.mine = 25;
-        this.row = 30
-        this.column = 30
+        this.mine = 99;
+        this.row = 22
+        this.column = 22
       }
     }
-    this.game = new Gamelogic(this.row, this.column, this.mine)
+    this.game = new Gamelogic(this.row, this.column, this.mine);
+    this.activeGame=true;
   }
 
-  // Calculate Grid Field
+  restartGame() {
+    for (let i = 0; i < this.column; i++) {
+      for (let j = 0; j < this.column; j++) {
+        let id: string = this.calculateId(i, j).toString();
+        let el = document.getElementById(id)
+        if ((el !== undefined) && (el !== null) && (this.game?.getNearbyMines(i, j) !== undefined)) {
+          el.innerHTML = ""
+        }
+      }
+      this.game = new Gamelogic(this.row, this.column, this.mine)
+    }
+  }
+
+  // Calculate Grid Field, fuegt CSS-Klasse für die richtige Anzahl der Reihen und Spalten hinzu
 
   getRows(): object {
     return { 'grid-template-columns': `repeat(${this.column},1fr)` }

@@ -1,0 +1,21 @@
+<div class="wrapper">
+    <div class="result">
+        <h1>Das Spiel ist vorbei </h1>
+    </div>
+    <div class="items">
+        @if(data.win){
+        <div class="result">
+            <p>You won</p>
+        </div>
+        }
+        @if(!data.win){
+        <div class="result">
+            <p>You lost</p>
+        </div>
+        }
+    </div>
+    <div class="buttons">
+        <button type="submit" class="btn btn-primary" (click)="closeDialog(false)">Close</button>
+        <button type="submit" class="btn btn-primary" (click)="closeDialog(true)">Restart</button>
+    </div>
+</div>

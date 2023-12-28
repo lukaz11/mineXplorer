@@ -9,12 +9,16 @@ import { FormsModule } from '@angular/forms';
 
 import { GameLauncherComponent } from './library/components/game-launcher/game-launcher.component';
 import { NavbarComponent } from './library/components/navbar/navbar.component';
+import { ResultComponent } from './library/components/result/result.component';
+import { RulesComponent } from './library/components/rules/rules.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameLauncherComponent,
-    NavbarComponent
+    NavbarComponent,
+    ResultComponent,
+    RulesComponent
   ],
   imports: [
     BrowserModule,

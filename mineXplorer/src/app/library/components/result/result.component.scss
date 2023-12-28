@@ -1,0 +1,17 @@
+.result h1{
+    text-align: center;
+}
+.buttons{
+    display: flex;
+    justify-content: space-evenly
+}
+.items{
+    text-align: center;
+    font-size: x-large;
+}
+.wrapper{
+    border: 1px solid black;
+    background-color: white;
+    height: 100%;
+    border-radius: 1px;
+}
