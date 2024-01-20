@@ -69,8 +69,9 @@ export class GameLauncherComponent {
       let id: string = this.calculateId(x, y).toString();
       let el = document.getElementById(id)
       if ((el !== undefined) && (el !== null) && (this.game?.getNearbyMines(x, y) !== undefined)) {
-        el.innerHTML = this.game?.getNearbyMines(x, y).toString();
-
+        let anzahlMinen:number=this.game?.getNearbyMines(x, y);
+        el.innerHTML = anzahlMinen.toString()
+        el.classList.add(this.getClass(anzahlMinen))
       }
 
       if (this.game?.getNearbyMines(x, y) === 0) {
@@ -83,6 +84,17 @@ export class GameLauncherComponent {
         }
       }
     }
+  }
+
+  // Colors for different classes
+
+  getClass(NearbyMines:number):string{
+    return (NearbyMines<4)?`mine-${NearbyMines}`:`mine-4`
+  }
+
+  removeClass(node:any){
+    var regx = new RegExp('\\b' + 'mine-' + '[^ ]*[ ]?\\b', 'g');
+    node.className = node.className.replace(regx, '');
   }
 
   // check game End conditions
@@ -136,7 +148,9 @@ export class GameLauncherComponent {
           }
           else {
             if ((el !== undefined) && (el !== null) && (this.game?.getNearbyMines(i, j) !== undefined)) {
-              el.innerHTML = this.game?.getNearbyMines(i, j).toString();
+              let anzahlMinen:number=this.game?.getNearbyMines(i, j);
+              el.innerHTML = anzahlMinen.toString()
+              el.classList.add(this.getClass(anzahlMinen))
 
             }
           }
@@ -178,6 +192,7 @@ export class GameLauncherComponent {
         let el = document.getElementById(id)
         if ((el !== undefined) && (el !== null) && (this.game?.getNearbyMines(i, j) !== undefined)) {
           el.innerHTML = ""
+          this.removeClass(el)
         }
       }
       this.game = new Gamelogic(this.row, this.column, this.mine)
