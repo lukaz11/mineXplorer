@@ -1,3 +1,4 @@
+$color0: #bbbbbb;
 $color1: #ffff00;
 $color2: #ffa500;
 $color3: #ff0000;
@@ -32,6 +33,9 @@ $color4: #800080;
     display: flex;
     justify-content: space-evenly;
     // align-items: center;
+}
+.mine-0{
+    background-color: $color0;
 }
 .mine-1{
     color:$color1

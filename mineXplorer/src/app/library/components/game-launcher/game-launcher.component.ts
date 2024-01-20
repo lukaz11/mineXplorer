@@ -14,7 +14,7 @@ export class GameLauncherComponent {
   row: number = 15;
   column: number = 15;
   gamewon: boolean = false;
-  activeGame:boolean=false;
+  activeGame: boolean = false;
   option: 'Leicht' | 'Mittel' | 'Schwer' | 'Custom' = 'Mittel';
 
   constructor(private dialog: MatDialog) {
@@ -39,7 +39,7 @@ export class GameLauncherComponent {
         flag.classList.add("bi")
         flag.classList.add("bi-flag")
         event.currentTarget.appendChild(flag)
-        if(this.game?.checkwinner()){
+        if (this.game?.checkwinner()) {
           this.openDialog(true);
         }
         break
@@ -69,8 +69,10 @@ export class GameLauncherComponent {
       let id: string = this.calculateId(x, y).toString();
       let el = document.getElementById(id)
       if ((el !== undefined) && (el !== null) && (this.game?.getNearbyMines(x, y) !== undefined)) {
-        let anzahlMinen:number=this.game?.getNearbyMines(x, y);
-        el.innerHTML = anzahlMinen.toString()
+        let anzahlMinen: number = this.game?.getNearbyMines(x, y);
+        if (anzahlMinen > 0) {
+          el.innerHTML = anzahlMinen.toString()
+        }
         el.classList.add(this.getClass(anzahlMinen))
       }
 
@@ -86,13 +88,13 @@ export class GameLauncherComponent {
     }
   }
 
-  // Colors for different classes
+  // Colors for different classes + Remove class Method
 
-  getClass(NearbyMines:number):string{
-    return (NearbyMines<4)?`mine-${NearbyMines}`:`mine-4`
+  getClass(NearbyMines: number): string {
+    return (NearbyMines < 4) ? `mine-${NearbyMines}` : `mine-4`
   }
 
-  removeClass(node:any){
+  removeClass(node: any) {
     var regx = new RegExp('\\b' + 'mine-' + '[^ ]*[ ]?\\b', 'g');
     node.className = node.className.replace(regx, '');
   }
@@ -115,16 +117,16 @@ export class GameLauncherComponent {
     console.log("Gameover, you clicked on a mine");
   }
 
-  openDialog(gameWin:boolean) {
-    const dialogRef = this.dialog.open(ResultComponent,{
-      width:'40%',
-      height:'25%',
-      data:{
-        win:gameWin
+  openDialog(gameWin: boolean) {
+    const dialogRef = this.dialog.open(ResultComponent, {
+      width: '40%',
+      height: '25%',
+      data: {
+        win: gameWin
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      if(result){
+      if (result) {
         this.restartGame()
       }
     });
@@ -148,8 +150,10 @@ export class GameLauncherComponent {
           }
           else {
             if ((el !== undefined) && (el !== null) && (this.game?.getNearbyMines(i, j) !== undefined)) {
-              let anzahlMinen:number=this.game?.getNearbyMines(i, j);
-              el.innerHTML = anzahlMinen.toString()
+              let anzahlMinen: number = this.game?.getNearbyMines(i, j);
+              if (anzahlMinen > 0) {
+                el.innerHTML = anzahlMinen.toString()
+              }
               el.classList.add(this.getClass(anzahlMinen))
 
             }
@@ -182,7 +186,7 @@ export class GameLauncherComponent {
       }
     }
     this.game = new Gamelogic(this.row, this.column, this.mine);
-    this.activeGame=true;
+    this.activeGame = true;
   }
 
   restartGame() {
