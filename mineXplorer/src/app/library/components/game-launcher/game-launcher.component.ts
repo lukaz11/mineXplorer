@@ -1,35 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Gamelogic } from '../../classes/gamelogic';
 import { MatDialog } from '@angular/material/dialog';
 import { ResultComponent } from '../result/result.component';
+import { GameService } from '../../services/game.service';
 
 @Component({
   selector: 'app-game-launcher',
   templateUrl: './game-launcher.component.html',
   styleUrl: './game-launcher.component.scss',
 })
-export class GameLauncherComponent {
+export class GameLauncherComponent implements OnInit {
   game?: Gamelogic;
-  mine: number = 10;
-  row: number = 15;
-  column: number = 15;
+  mine: number = 40;
+  row: number = 16;
+  column: number = 16;
   gamewon: boolean = false;
-  activeGame: boolean = false;
+  countUnveiledCells: number = 0
+  //activeGame:boolean=false;
   option: 'Leicht' | 'Mittel' | 'Schwer' | 'Custom' = 'Mittel';
+  constructor(private dialog: MatDialog, public gameservice : GameService) {
 
-  constructor(private dialog: MatDialog) {
-
+  }
+  ngOnInit(): void {
+    this.gameservice.activeGame = false;
+    //this.openDialog(true)
   }
 
   //Create iterable for "for directive"
-
   loopArray(start: number, stop: number, step: number): Array<number> {
     stop--;
     return (Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + i * step))
   }
 
   //mark Field on Flag with rightclick
-
   setFlag(event: any, x: number, y: number) {
     event.preventDefault();
     switch (this.game?.flagField(x, y)) {
@@ -56,6 +59,10 @@ export class GameLauncherComponent {
     if (this.game?.checkwinner()) {
       this.openDialog(true);
     }
+    if (this.game?.getStatus(x,y)) {
+      this.countUnveiledCells++;
+    }
+    console.log(this.countUnveiledCells)
   }
 
   // Anzeigen der benachbarten Elemente im Feld
@@ -105,7 +112,13 @@ export class GameLauncherComponent {
     if (this.game?.getMine(x, y)) {
       this.gameOver();
       this.revealField();
-      this.openDialog(false);
+      if (this.countUnveiledCells > 0) {
+
+        this.openDialog(false);
+      } else {
+        this.restartGame()
+        this.clickField(x,y)
+      }
       return true;
     }
     else {
@@ -165,9 +178,21 @@ export class GameLauncherComponent {
   }
 
   // Erzeugt eine neue Instanz von Gamelogic mit Custom oder vordefinierten Werten
-
   onSubmit(form: any) {
     console.log(form)
+    this.updateDifficulty()
+    //check if values make sense
+    if ((this.row * this.column) <= this.mine) {
+      console.log(this.row + " " + this.column + " " + this.mine)
+      console.log(this.row * this.column)
+      alert("Reihe * Spalte muss kleiner sein als Anz. Minen")
+      return;
+    }
+    this.game = new Gamelogic(this.row, this.column, this.mine);
+    this.gameservice.activeGame = true;
+  }
+
+  updateDifficulty() {
     if (this.option !== 'Custom') {
       if (this.option === 'Leicht') {
         this.mine = 10;
@@ -185,8 +210,7 @@ export class GameLauncherComponent {
         this.column = 22
       }
     }
-    this.game = new Gamelogic(this.row, this.column, this.mine);
-    this.activeGame = true;
+
   }
 
   restartGame() {
@@ -201,6 +225,7 @@ export class GameLauncherComponent {
       }
       this.game = new Gamelogic(this.row, this.column, this.mine)
     }
+    this.countUnveiledCells = 0;
   }
 
   // Calculate Grid Field, fuegt CSS-Klasse für die richtige Anzahl der Reihen und Spalten hinzu
@@ -232,4 +257,9 @@ export class GameLauncherComponent {
     return this.game?.getStatus(x, y)
   }
 
+  //back to game settings
+ newGame() {
+  this.gameservice.activeGame = false;
+  }
 }
+

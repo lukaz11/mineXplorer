@@ -1,50 +1,74 @@
 <app-navbar></app-navbar>
-@if (activeGame===false){
-<div class="container justify-content-center">
-    <form #gameForm ngForm name="form1" (ngSubmit)="onSubmit(gameForm)">
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <label for="difficulty">difficulty</label>
-                <select id="difficulty" class="form-control" [(ngModel)]="option" name="option">
-                    <option>Leicht</option>
-                    <option selected>Mittel</option>
-                    <option>Schwer</option>
-                    <option>Custom</option>
-                </select>
-            </div>
-            @if (option==='Custom'){
-            <div class="form-group col-md-4">
-                <input class="form-control" type="number" placeholder="Minen" [(ngModel)]="mine" name="mine">
-                <input class="form-control" type="number" placeholder="Reihen" [(ngModel)]="row" name="row">
-                <input class="form-control" type="number" placeholder="Spalten" [(ngModel)]="column" name="column">
-            </div>
-            }
+<div class="background-scroll"></div>
+@if (!this.gameservice.activeGame){
+<div class="gamelauncher justify-content-center">
+  <form #gameForm ngForm name="form1" (ngSubmit)="onSubmit(gameForm)">
+    <div class="form-row">
+      <div class="form-group col-md-4 flex-box">
+
+        <label for="difficulty">Difficulty</label>
+        <select id="difficulty" class="form-control" [(ngModel)]="option" name="option" (change)="updateDifficulty()">
+          <option>Leicht</option>
+          <option selected>Mittel</option>
+          <option>Schwer</option>
+          <option>Custom</option>
+        </select>
+
+        <div class="diff-pick">
+          <button type="button" (click)="option='Leicht'; updateDifficulty()" [ngClass]="[option=='Leicht' ? 'diff-selected': '']">Leicht</button>
+          <button type="button" (click)="option='Mittel'; updateDifficulty()" [ngClass]="[option=='Mittel' ? 'diff-selected': '']">Mittel</button>
+          <button type="button" (click)="option='Schwer'; updateDifficulty()" [ngClass]="[option=='Schwer' ? 'diff-selected': '']">Schwer</button>
+          <button type="button" (click)="option='Custom'; updateDifficulty()" [ngClass]="[option=='Custom' ? 'diff-selected': '']">Custom</button>
         </div>
-        <button type="submit" class="btn btn-primary">Start</button>
-    </form>
+
+      </div>
+      <!--@if (option==='Custom'){-->
+      <div class="form-group col-md-4 flex-box">
+        <label>Minen</label>
+        <input class="form-control" type="number" placeholder="Minen" [(ngModel)]="mine" name="mine"
+          [disabled]="option!='Custom'" min="1">
+      </div>
+      <div class="form-group col-md-4 flex-box">
+        <label>Reihen</label>
+        <input class="form-control" type="number" placeholder="Reihen" [(ngModel)]="row" name="row"
+          [disabled]="option!='Custom'" min="1">
+      </div>
+      <div class="form-group col-md-4 flex-box">
+        <label>Spalten</label>
+        <input class="form-control" type="number" placeholder="Spalten" [(ngModel)]="column" name="column"
+          [disabled]="option!='Custom'" min="1">
+      </div>
+      <!--}-->
+    </div>
+    <div class="submit-btn">
+      <button type="submit">Start</button>
+    </div>
+
+  </form>
 </div>
 }
 
-<div class="container">
-    @if (activeGame===true){
-    <div class="gamefield linestart" [ngStyle]="getRows()">
 
-        @for(x of (loopArray(0,column,1));track x;let j=$index){
-        <div class="field-row">
-            @for(y of (loopArray(0,row,1));track y;let i=$index){
-            <div class="inner-field" (click)="clickField(i,j)" (contextmenu)="setFlag($event,i,j)"
-                id="{{calculateId(i,j)}}">
-            </div>
-            }
-        </div>
-        }
+@if (this.gameservice.activeGame){
+<div class="gamefield-container">
+  <div class="gamefield linestart" [ngStyle]="getRows()">
 
+    @for(x of (loopArray(0,column,1));track x;let j=$index){
+    <div class="field-row">
+      @for(y of (loopArray(0,row,1));track y;let i=$index){
+      <div class="inner-field" (click)="clickField(i,j)" (contextmenu)="setFlag($event,i,j)" id="{{calculateId(i,j)}}"
+        [ngClass]="this.game?.getStatus(i,j)">
+      </div>
+      }
     </div>
     }
+
+  </div>
 </div>
-<div class="container">
-    <div class="subfield">
-        <button type="submit" class="btn btn-primary" (click)="restartGame()">Restart</button>
-        <!-- <button type="submit" class="btn btn-primary" (click)="openDialog(false)">Test Popup</button> -->
-    </div>
+
+<div class="subfield">
+    <button type="submit" (click)="restartGame()">Restart</button>
+    <button type="submit" (click)="newGame()">New Game</button>
+    <!-- <button type="submit" class="btn btn-primary" (click)="openDialog(false)">Test Popup</button> -->
 </div>
+}

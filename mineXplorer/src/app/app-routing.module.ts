@@ -4,9 +4,10 @@ import { GameLauncherComponent } from './library/components/game-launcher/game-l
 import { RulesComponent } from './library/components/rules/rules.component';
 
 const routes: Routes = [
+  {path: '', redirectTo: '/game', pathMatch: 'full' },
   {path:'game',component:GameLauncherComponent},
-  {path:'rules',component:RulesComponent},
-  {path:'**',component:GameLauncherComponent}
+  {path:'rules',component:RulesComponent} /*,
+  {path:'**',component:GameLauncherComponent}*/
 ];
 
 @NgModule({

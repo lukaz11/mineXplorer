@@ -1,5 +1,100 @@
 /* You can add global styles to this file, and also import other style files */
 // @import "node-modules/bootstrap-icons/font/bootstrap-icons.css";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: silkscreen, "Helvetica Neue", sans-serif;
+}
+
+@font-face {
+  font-family: silkscreen;
+  src: url(assets/font/Silkscreen-Regular.ttf) format("opentype"); //https://fonts.google.com/specimen/Silkscreen
+}
+
+:root {
+  --btn-size: 37px;
+  --primary-color: #ffffff;
+  --secundary-color: rgb(170, 170, 170);
+  --tertiary-color: rgb(86, 85, 85);
+  --quartiary-color: black;
+  --theme-color: #D08E3C;
+}
+
+.active-link {
+  color: var(--primary-color);
+  background-color: var(--tertiary-color);
+  border: var(--quartiary-color) 2px solid;
+}
+
+select {
+  box-shadow: inset 1px 1px 2px var(--quartiary-color);
+    background-color: var(--primary-color);
+    border: 0px !important;
+    border-radius: 0px !important;
+}
+input {
+  box-shadow: inset 1px 1px 2px var(--quartiary-color);
+    background-color: var(--primary-color);
+    border: 0px !important;
+    border-radius: 0px !important;
+
+    &:disabled {
+      opacity: 0.7 !important;
+    }
+}
+
+button {
+  height: var(--btn-size);
+  width: calc(var(--btn-size) * 10);
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  user-select: none;
+  image-rendering: pixelated;
+  border: 2px solid #000;
+  box-shadow: 3px 3px 0px 0px var(--quartiary-color);
+  margin: 0px 5px;
+
+  /* Mouse over */
+  &:hover .title {
+    background-color: var(--theme-color);
+    text-shadow: 2px 2px #202013CC;
+    color: var(--theme-color);
+  }
+
+  &:active .title {
+    box-shadow: inset -2px -4px #0004, inset 2px 2px #FFF5;
+  }
+
+  /* Button title */
+  .title {
+    width: 100%;
+    height: 100%;
+    padding-bottom: .3em;
+    color: var(--primary-color);
+    text-shadow: 2px 2px #000A;
+    box-shadow: inset -2px -4px #0006, inset 2px 2px #FFF7;
+  }
+
+  /* Others */
+  &.full {
+    width: 100%;
+    height: 100%;
+  }
+
+  &.lang {
+    & img {
+      width: 26px;
+      height: 26px;
+    }
+
+    & .title {
+      padding-bottom: 0;
+    }
+  }
+}

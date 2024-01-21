@@ -15,7 +15,8 @@
         }
     </div>
     <div class="buttons">
-        <button type="submit" class="btn btn-primary" (click)="closeDialog(false)">Close</button>
-        <button type="submit" class="btn btn-primary" (click)="closeDialog(true)">Restart</button>
+        <!-- <button type="submit" class="btn btn-primary" (click)="closeDialog(false)">Close</button> -->
+        <button type="submit" (click)="closeDialog(true)">Restart</button>
+        <button type="submit" (click)="closeDialog(true); this.gameservice.activeGame = false;">new Game</button>
     </div>
 </div>

@@ -1,0 +1,13 @@
+.logo {
+  padding: 5px;
+  width: 50px;
+}
+.navbar {
+  height: 7vh;
+  background-color: var(--secundary-color);
+  z-index: 2;
+  border-bottom: 2px solid var(--quartiary-color);
+}
+.theme {
+  color: var(--theme-color)
+}
