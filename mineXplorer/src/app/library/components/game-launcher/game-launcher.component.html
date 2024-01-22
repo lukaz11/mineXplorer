@@ -6,7 +6,7 @@
     <div class="form-row">
       <div class="form-group col-md-4 flex-box">
 
-        <label for="difficulty">Difficulty</label>
+        <label for="difficulty">Schwierigkeitsgrad</label>
         <select id="difficulty" class="form-control" [(ngModel)]="option" name="option" (change)="updateDifficulty()">
           <option>Leicht</option>
           <option selected>Mittel</option>
@@ -15,10 +15,14 @@
         </select>
 
         <div class="diff-pick">
-          <button type="button" (click)="option='Leicht'; updateDifficulty()" [ngClass]="[option=='Leicht' ? 'diff-selected': '']">Leicht</button>
-          <button type="button" (click)="option='Mittel'; updateDifficulty()" [ngClass]="[option=='Mittel' ? 'diff-selected': '']">Mittel</button>
-          <button type="button" (click)="option='Schwer'; updateDifficulty()" [ngClass]="[option=='Schwer' ? 'diff-selected': '']">Schwer</button>
-          <button type="button" (click)="option='Custom'; updateDifficulty()" [ngClass]="[option=='Custom' ? 'diff-selected': '']">Custom</button>
+          <button type="button" (click)="option='Leicht'; updateDifficulty()"
+            [ngClass]="[option=='Leicht' ? 'diff-selected': '']">Leicht</button>
+          <button type="button" (click)="option='Mittel'; updateDifficulty()"
+            [ngClass]="[option=='Mittel' ? 'diff-selected': '']">Mittel</button>
+          <button type="button" (click)="option='Schwer'; updateDifficulty()"
+            [ngClass]="[option=='Schwer' ? 'diff-selected': '']">Schwer</button>
+          <button type="button" (click)="option='Custom'; updateDifficulty()"
+            [ngClass]="[option=='Custom' ? 'diff-selected': '']">Custom</button>
         </div>
 
       </div>
@@ -40,9 +44,9 @@
       </div>
       <!--}-->
     </div>
-    <div class="submit-btn">
-      <button type="submit">Start</button>
-    </div>
+
+    <button type="submit" class="gamelauncher-btn">Start</button>
+
 
   </form>
 </div>
@@ -66,9 +70,15 @@
   </div>
 </div>
 
-<div class="subfield">
-    <button type="submit" (click)="restartGame()">Restart</button>
-    <button type="submit" (click)="newGame()">New Game</button>
-    <!-- <button type="submit" class="btn btn-primary" (click)="openDialog(false)">Test Popup</button> -->
+<div class="side-panel">
+  <p>Minen: {{mine}}</p>
+  <p>Felder: {{row*column}}</p>
+  <p>Entdeckte Felder: {{countUnveiledCells}}</p>
+  <p></p>
+  <p></p>
+  <p></p>
+  <button type="submit" (click)="restartGame()">Zurücksetzen</button>
+  <button type="submit" (click)="newGame()">Neues Spiel</button>
+  <!-- <button type="submit" class="btn btn-primary" (click)="openDialog(false)">Test Popup</button> -->
 </div>
 }

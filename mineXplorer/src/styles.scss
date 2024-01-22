@@ -17,7 +17,6 @@ body {
 }
 
 :root {
-  --btn-size: 37px;
   --primary-color: #ffffff;
   --secundary-color: rgb(170, 170, 170);
   --tertiary-color: rgb(86, 85, 85);
@@ -49,8 +48,9 @@ input {
 }
 
 button {
+  width: 100%;
   height: var(--btn-size);
-  width: calc(var(--btn-size) * 10);
+ // width: calc(var(--btn-size) * 10);
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
