@@ -276,6 +276,7 @@ export class GameLauncherComponent implements OnInit {
   //back to game settings
  newGame() {
   this.gameservice.activeGame = false;
+  this.firstMove=true;
   }
 }
 
