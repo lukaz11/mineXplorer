@@ -77,6 +77,20 @@ export class Gamelogic {
         return true
     }
 
+    getFlaggsNearby(x:number,y:number):number{
+        let counter:number=0
+        for (let i = 0; i < this.testcases.length; i++) {
+            let a = x + (this.testcases[i][0])
+            let b = y + (this.testcases[i][1])
+            if ((a >= 0) && (a < this.row) && (b >= 0) && (b < this.column) && (this.gamefield[a][b].status==="flagged")) {
+                counter++
+            }
+        }
+        console.log("flag Counter",counter)
+        return counter
+    }
+
+
     getRandomInt(max: number): number {
         return Math.floor(Math.random() * max);
     }
@@ -89,7 +103,7 @@ export class Gamelogic {
         return this.gamefield[x][y].mine
     }
 
-    getMinesNearby  (x:number,y:number){
+    getMinesNearby  (x:number,y:number):number{
         return this.gamefield[x][y].minesNearby
     }
 

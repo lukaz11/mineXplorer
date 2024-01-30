@@ -60,11 +60,11 @@ export class GameLauncherComponent implements OnInit {
       this.game?.generateMines(x,y);
       this.firstMove=false;
     }
-
     this.addFieldNumber(x, y);
     if (this.game?.checkwinner()) {
       this.openDialog(true);
     }
+    this.game?.getFlaggsNearby(x,y);
     if (this.game?.getStatus(x,y)) {
       this.countUnveiledCells++;
     }
@@ -98,6 +98,15 @@ export class GameLauncherComponent implements OnInit {
           }
         }
       }
+    }
+    if(this.game?.gamefield[x][y].status === 'uncovered'&&(this.game?.getFlaggsNearby(x,y)===this.game?.getMinesNearby(x,y))){
+      for (let i = 0; i < this.game?.testcases.length; i++) {
+        let a = x + (this.game.testcases[i][0])
+        let b = y + (this.game.testcases[i][1])
+        if ((a >= 0) && (a < this.row) && (b >= 0) && (b < this.column) && (this.game?.gamefield[a][b].status === 'covered')) {
+          this.addFieldNumber(a, b)
+        }
+      }    
     }
   }
 
