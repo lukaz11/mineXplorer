@@ -30,7 +30,7 @@ export class Gamelogic {
             }
         }
         console.log(this.gamefield)
-        this.generateMines();
+        // this.generateMines();
     }
 
     flagField(x:number,y:number):'remove'|'add'|'noAction'{
@@ -47,14 +47,14 @@ export class Gamelogic {
         return 'noAction'
     }
 
-    generateMines() {
+    generateMines(a:number,b:number) {
         let i = 0;
         const fieldsize = this.row * this.column;
         while (i < this.mines) {
             let val = this.getRandomInt(fieldsize);
             let y = Math.floor(val / this.row);
             let x = val % this.row;
-            if (!(this.gamefield[x][y].mine)) {
+            if ((!(this.gamefield[x][y].mine))&&(!((a===x)&&(b===y)))) {
                 this.gamefield[x][y].mine = true;
                 i++;
                 // console.log('new Mine at:',x,y)

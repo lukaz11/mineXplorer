@@ -15,6 +15,7 @@ export class GameLauncherComponent implements OnInit {
   row: number = 16;
   column: number = 16;
   gamewon: boolean = false;
+  firstMove: boolean= true;
   countUnveiledCells: number = 0
   //activeGame:boolean=false;
   option: 'Leicht' | 'Mittel' | 'Schwer' | 'Custom' = 'Mittel';
@@ -55,6 +56,11 @@ export class GameLauncherComponent implements OnInit {
   }
 
   clickField(x: number, y: number) {
+    if(this.firstMove){
+      this.game?.generateMines(x,y);
+      this.firstMove=false;
+    }
+
     this.addFieldNumber(x, y);
     if (this.game?.checkwinner()) {
       this.openDialog(true);
@@ -226,6 +232,7 @@ export class GameLauncherComponent implements OnInit {
       this.game = new Gamelogic(this.row, this.column, this.mine)
     }
     this.countUnveiledCells = 0;
+    this.firstMove=true
   }
 
   // Calculate Grid Field, fuegt CSS-Klasse für die richtige Anzahl der Reihen und Spalten hinzu
