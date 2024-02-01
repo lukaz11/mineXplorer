@@ -5,18 +5,18 @@
     <div class="items">
         @if(data.win){
         <div class="result">
-            <p>You won</p>
+            <p>Gewonnen!</p>
         </div>
         }
         @if(!data.win){
         <div class="result">
-            <p>You lost</p>
+            <p>Verloren!</p>
         </div>
         }
     </div>
     <div class="buttons">
         <!-- <button type="submit" class="btn btn-primary" (click)="closeDialog(false)">Close</button> -->
-        <button type="submit" (click)="closeDialog(true)">Restart</button>
-        <button type="submit" (click)="closeDialog(true); this.gameservice.activeGame = false;">new Game</button>
+        <button type="submit" (click)="closeDialog(true)">NeuStarten</button>
+        <button type="submit" (click)="closeDialog(true); this.gameservice.activeGame = false;">Neues Spiel</button>
     </div>
 </div>

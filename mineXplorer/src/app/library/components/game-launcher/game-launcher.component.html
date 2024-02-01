@@ -31,21 +31,24 @@
         <label>Minen</label>
         <input class="form-control" type="number" placeholder="Minen" [(ngModel)]="mine" name="mine"
           [disabled]="option!='Custom'" min="1">
+          <p [ngClass]="[mine >= column * row ? '' : 'hide']" ><small>Die Anzahl der Minen muss kleiner sein, als die Anzahl der Felder</small></p>
       </div>
       <div class="form-group col-md-4 flex-box">
         <label>Reihen</label>
         <input class="form-control" type="number" placeholder="Reihen" [(ngModel)]="row" name="row"
-          [disabled]="option!='Custom'" min="1">
+          [disabled]="option!='Custom'" min="2" max="5">
+          <p [ngClass]="[row > 30 || row < 2 ? '' : 'hide']"><small>Die Anzahl der Reihen muss zwischen 2 und 30 liegen</small></p>
       </div>
       <div class="form-group col-md-4 flex-box">
         <label>Spalten</label>
         <input class="form-control" type="number" placeholder="Spalten" [(ngModel)]="column" name="column"
-          [disabled]="option!='Custom'" min="1">
+          [disabled]="option!='Custom'" min="2" max="5">
+          <p [ngClass]="[column > 30 || column < 2 ? '' : 'hide']"><small>Die Anzahl der Reihen muss zwischen 2 und 30 liegen</small></p>
       </div>
       <!--}-->
     </div>
 
-    <button type="submit" class="gamelauncher-btn">Start</button>
+    <button type="submit" class="gamelauncher-btn" [disabled]="(mine >= column * row)||(row > 30 || row < 2)||(column > 30 || column < 2)">Start</button>
 
 
   </form>
@@ -71,14 +74,26 @@
 </div>
 
 <div class="side-panel">
+  <div class="star_container">
+    <img *ngFor="let index of [0,1,2,3,4]; index as i" [ngClass]="[100 - getProgress() > i * 20  ?
+  100 - getProgress() > i * 20 + 10 ?
+  'star_full' : 'star_half' : 'star_empty']" class="star">
+  </div>
+  <span>
+    {{(this.gameservice.minutes >= 10) ? this.gameservice.minutes.toString() : '0' +
+    this.gameservice.minutes.toString()}} :
+    {{(this.gameservice.secounds >= 10) ? this.gameservice.secounds.toString() : '0' +
+    this.gameservice.secounds.toString()}}
+  </span>
+
+  <p>Progress: {{getProgress()}} % </p>
   <p>Minen: {{mine}}</p>
   <p>Felder: {{row*column}}</p>
-  <p>Entdeckte Felder: {{countUnveiledCells}}</p>
-  <p></p>
-  <p></p>
-  <p></p>
+  <p> Verlbleibende Flaggen : {{this.game?.remainingFlags}} </p>
+  <p> Entdeckte Felder : {{this.game?.fieldsDiscovered}} </p>
+  <p> Verbleibende Felder: {{this.game?.remainingFields}} </p>
   <button type="submit" (click)="restartGame()">Zurücksetzen</button>
   <button type="submit" (click)="newGame()">Neues Spiel</button>
-  <!-- <button type="submit" class="btn btn-primary" (click)="openDialog(false)">Test Popup</button> -->
+  <!-- <button type="submit" class="btn btn-primary" (click)="getProgress()">Test Popup</button> -->
 </div>
 }

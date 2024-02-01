@@ -121,7 +121,29 @@ export class Gamelogic {
             }
 
         }
+        this.updateGameStatistics()
         // console.log(this.gamefield[x][y])
         return this.gamefield[x][y].minesNearby
+    }
+
+    remainingFlags = 0;
+    fieldsDiscovered = 0;
+    remainingFields = 0;
+    updateGameStatistics() {
+      this.remainingFlags = this.mines;
+      this.fieldsDiscovered = 0;
+      this.remainingFields = this.row * this.column;
+      for (let i = 0; i < this.row; i++) {
+        for (let j = 0; j < this.column; j++) {
+          //console.log(this.game?.gamefield[i][j].mine , this.game?.gamefield[i][j].status)
+          if (this.gamefield[i][j].status == 'flagged') { //wenn Flagge
+            this.remainingFlags--;
+            this.remainingFields--;
+          } else if (this.gamefield[i][j].status == 'uncovered') {  //wenn
+            this.fieldsDiscovered++;
+            this.remainingFields--;
+          }
+        }
+      }
     }
 }

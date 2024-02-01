@@ -171,3 +171,31 @@ $color4: #800080;
     background-position: right top;
   }
 }
+
+.star_container {
+  display: flex;
+  justify-content: space-evenly;
+  // align-items: center;
+  width: 100%;
+}
+
+.star {
+  display: block;
+  height: 60px;
+  width: 55px;
+  object-fit: contain;
+  background-size: cover;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+.star_full {
+  background-image: url("/assets/images/icons/star_full.png");
+}
+
+.star_half {
+  background-image: url("/assets/images/icons/star_half.png");
+}
+
+.star_empty {
+  background-image: url("/assets/images/icons/star_empty.png");
+}

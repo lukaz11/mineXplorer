@@ -19,7 +19,7 @@ export class GameLauncherComponent implements OnInit {
   countUnveiledCells: number = 0
   //activeGame:boolean=false;
   option: 'Leicht' | 'Mittel' | 'Schwer' | 'Custom' = 'Mittel';
-  constructor(private dialog: MatDialog, public gameservice : GameService) {
+  constructor(private dialog: MatDialog, public gameservice: GameService) {
 
   }
   ngOnInit(): void {
@@ -53,6 +53,7 @@ export class GameLauncherComponent implements OnInit {
 
       }
     }
+    this.game?.updateGameStatistics();
   }
 
   clickField(x: number, y: number) {
@@ -68,6 +69,7 @@ export class GameLauncherComponent implements OnInit {
     if (this.game?.getStatus(x,y)) {
       this.countUnveiledCells++;
     }
+    this.gameservice.startTimer()
     console.log(this.countUnveiledCells)
   }
 
@@ -77,6 +79,7 @@ export class GameLauncherComponent implements OnInit {
     if (this.game?.gamefield[x][y].status === 'covered') {
       if (this.checkGameEnd(x, y)) {
         console.log("break")
+        this.gameservice.gameEnd = true
         return
       }
       let id: string = this.calculateId(x, y).toString();
@@ -106,7 +109,7 @@ export class GameLauncherComponent implements OnInit {
         if ((a >= 0) && (a < this.row) && (b >= 0) && (b < this.column) && (this.game?.gamefield[a][b].status === 'covered')) {
           this.addFieldNumber(a, b)
         }
-      }    
+      }
     }
   }
 
@@ -128,11 +131,10 @@ export class GameLauncherComponent implements OnInit {
       this.gameOver();
       this.revealField();
       if (this.countUnveiledCells > 0) {
-
         this.openDialog(false);
       } else {
         this.restartGame()
-        this.clickField(x,y)
+        this.clickField(x, y)
       }
       return true;
     }
@@ -189,7 +191,6 @@ export class GameLauncherComponent implements OnInit {
         }
       }
     }
-
   }
 
   // Erzeugt eine neue Instanz von Gamelogic mit Custom oder vordefinierten Werten
@@ -229,6 +230,7 @@ export class GameLauncherComponent implements OnInit {
   }
 
   restartGame() {
+    this.gameservice.resetTimer()
     for (let i = 0; i < this.column; i++) {
       for (let j = 0; j < this.column; j++) {
         let id: string = this.calculateId(i, j).toString();
@@ -278,5 +280,14 @@ export class GameLauncherComponent implements OnInit {
   this.gameservice.activeGame = false;
   this.firstMove=true;
   }
+
+  getProgress() {
+    console.log(this.mine, this.row, this.column)
+    let time = this.gameservice.minutes * 60 + this.gameservice.secounds
+    let fields = this.row * this.column
+    let progress = (time / fields) * 100
+    return progress
+  }
+
 }
 

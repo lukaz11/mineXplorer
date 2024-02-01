@@ -1,28 +1,30 @@
     {
         "name": "Angular & Node (latest LTS)",
-    "dockerFile": "Dockerfile",
-    // Uncomment the next line if you want to publish any ports.
-    "appPort": [4200],
-    // Uncomment the next line if you want to add in default container specific settings.json values
-    // "settings": { "workbench.colorTheme": "Quiet Light" },
-    // Uncomment the next line to run commands after the container is created.
-    // "postCreateCommand": "npm install",
-    "customizations": {
-        "vscode": {
-            "extensions": [
-				"vscode-icons-team.vscode-icons",
-				"EditorConfig.EditorConfig",
-				"Angular.ng-template",
-				"johnpapa.angular2",
-				"ms-vscode.vscode-typescript-tslint-plugin",
-				"eg2.vscode-npm-script",
-				"christian-kohler.path-intellisense",
-				"github.vscode-pull-request-github",
-				"eamodio.gitlens",
-				"nrwl.angular-console",
-				"johnpapa.Angular2",
-                "bierner.markdown-mermaid"
-			]
+        "dockerFile": "Dockerfile",
+        // Uncomment the next line if you want to publish any ports.
+        "appPort": [
+            4200
+        ],
+        // Uncomment the next line if you want to add in default container specific settings.json values
+        // "settings": { "workbench.colorTheme": "Quiet Light" },
+        // Uncomment the next line to run commands after the container is created.
+        // "postCreateCommand": "npm install",
+        "customizations": {
+            "vscode": {
+                "extensions": [
+                    "vscode-icons-team.vscode-icons",
+                    "EditorConfig.EditorConfig",
+                    "Angular.ng-template",
+                    "johnpapa.angular2",
+                    "ms-vscode.vscode-typescript-tslint-plugin",
+                    "eg2.vscode-npm-script",
+                    "christian-kohler.path-intellisense",
+                    "github.vscode-pull-request-github",
+                    "eamodio.gitlens",
+                    "nrwl.angular-console",
+                    "johnpapa.Angular2",
+                    "bierner.markdown-mermaid"
+                ]
+            }
         }
-    }  
-   }
+    }
