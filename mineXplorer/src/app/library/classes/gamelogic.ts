@@ -20,18 +20,15 @@ export class Gamelogic {
         this.column = column;
         this.mines = mines
         this.gamefield = []
-        // console.log("row:", this.row,"column:",this.column,"mines:",this.mines)
         for (let x = 0; x < this.row; x++) {
             this.gamefield[x] = [];
-            // console.log(x)
             for (let y = 0; y < this.column; y++) {
-                // console.log(y)
                 this.gamefield[x][y] = new Field(x, y)
             }
         }
-        console.log(this.gamefield)
-        // this.generateMines();
     }
+
+    // setting the flag status on a cell
 
     flagField(x:number,y:number):'remove'|'add'|'noAction'{
         if(this.gamefield[x][y].status==='covered'){
@@ -47,6 +44,8 @@ export class Gamelogic {
         return 'noAction'
     }
 
+    // places mines initially
+
     generateMines(a:number,b:number) {
         let i = 0;
         const fieldsize = this.row * this.column;
@@ -57,7 +56,6 @@ export class Gamelogic {
             if ((!(this.gamefield[x][y].mine))&&(!((a===x)&&(b===y)))) {
                 this.gamefield[x][y].mine = true;
                 i++;
-                // console.log('new Mine at:',x,y)
             }
         }
     }
@@ -66,7 +64,6 @@ export class Gamelogic {
         if(this.mines!==this.flaggedField){
             return false
         }
-        console.log('mines=flagged')
         for(let x=0;x < this.row;x++){
             for(let y=0;y < this.column;y++){
                 if(this.gamefield[x][y].status==='covered'){
@@ -77,6 +74,8 @@ export class Gamelogic {
         return true
     }
 
+    // calculate Flaggs in nearby fields
+
     getFlaggsNearby(x:number,y:number):number{
         let counter:number=0
         for (let i = 0; i < this.testcases.length; i++) {
@@ -86,10 +85,10 @@ export class Gamelogic {
                 counter++
             }
         }
-        console.log("flag Counter",counter)
         return counter
     }
 
+    // getter functions
 
     getRandomInt(max: number): number {
         return Math.floor(Math.random() * max);
@@ -107,13 +106,14 @@ export class Gamelogic {
         return this.gamefield[x][y].minesNearby
     }
 
+    // calculate Mines in nearby fields
+
     getNearbyMines(x: number, y: number): number {
         if (this.gamefield[x][y].status === 'covered') {
             this.gamefield[x][y].status='uncovered'
             for (let i = 0; i < this.testcases.length; i++) {
                 let a = x + (this.testcases[i][0])
                 let b = y + (this.testcases[i][1])
-                // console.log("a,b",a,b)
                 // check if array out of bound/negativ
                 if ((a >= 0) && (a < this.row) && (b >= 0) && (b < this.column) && (this.gamefield[a][b].mine)) {
                     this.gamefield[x][y].minesNearby++
@@ -122,7 +122,6 @@ export class Gamelogic {
 
         }
         this.updateGameStatistics()
-        // console.log(this.gamefield[x][y])
         return this.gamefield[x][y].minesNearby
     }
 
@@ -135,7 +134,6 @@ export class Gamelogic {
       this.remainingFields = this.row * this.column;
       for (let i = 0; i < this.row; i++) {
         for (let j = 0; j < this.column; j++) {
-          //console.log(this.game?.gamefield[i][j].mine , this.game?.gamefield[i][j].status)
           if (this.gamefield[i][j].status == 'flagged') { //wenn Flagge
             this.remainingFlags--;
             this.remainingFields--;

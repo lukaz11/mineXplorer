@@ -22,8 +22,8 @@ export class GameService {
   }
 
   startTimer() {
-    console.log(this.activeGame)
-    console.log(this.resetTimer)
+    // console.log(this.activeGame)
+    // console.log(this.resetTimer)
 
     let intervalId = setInterval(() => {
       if (this.activeGame == false || this.restart == true) clearInterval(intervalId)

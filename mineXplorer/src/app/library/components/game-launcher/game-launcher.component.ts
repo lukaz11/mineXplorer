@@ -58,7 +58,6 @@ export class GameLauncherComponent implements OnInit {
   }
 
   clickField(x: number, y: number) {
-    console.log("click on: "+ x + " " + y)
     if(this.firstMove){
       this.game?.generateMines(x,y);
       this.firstMove=false;
@@ -75,7 +74,7 @@ export class GameLauncherComponent implements OnInit {
       this.countUnveiledCells++;
     }
 
-    console.log(this.countUnveiledCells)
+    // console.log(this.countUnveiledCells)
   }
 
   // Anzeigen der benachbarten Elemente im Feld
@@ -83,7 +82,6 @@ export class GameLauncherComponent implements OnInit {
   addFieldNumber(x: number, y: number) {
     if (this.game?.gamefield[x][y].status === 'covered') {
       if (this.checkGameEnd(x, y)) {
-        console.log("break")
         this.gameservice.gameEnd = true
         return
       }
@@ -133,7 +131,7 @@ export class GameLauncherComponent implements OnInit {
 
   checkGameEnd(x: number, y: number): boolean {
     if (this.game?.getMine(x, y)) {
-      this.gameOver();
+      // this.gameOver();
       this.revealField();
       if (this.countUnveiledCells > 0) {
         this.openDialog(false);
@@ -172,7 +170,6 @@ export class GameLauncherComponent implements OnInit {
   revealField() {
     const mine = document.createElement("img")
     let fieldsize=`${(45/this.column).toFixed(2)}vh`
-    console.log("fieldsiez",fieldsize)
     // mine.classList.add("bi")
     // mine.classList.add("bi-infinity")
     mine.setAttribute("src","assets/images/icons/mine.png")
@@ -183,9 +180,7 @@ export class GameLauncherComponent implements OnInit {
           let id: string = this.calculateId(i, j).toString();
           let el = document.getElementById(id)
           if (this.game?.getMine(i, j)) {
-            // console.log('in Mine', el)
             var newMine = mine.cloneNode(true)
-            // console.log("clh",el?.clientHeight)
             el?.appendChild(newMine)
             this.calculateHeight(".iconH",`${fieldsize}`)
             // this.resize(".iconH")
@@ -207,12 +202,9 @@ export class GameLauncherComponent implements OnInit {
 
   // Erzeugt eine neue Instanz von Gamelogic mit Custom oder vordefinierten Werten
   onSubmit(form: any) {
-    // console.log(form)
     this.updateDifficulty()
     //check if values make sense
     if ((this.row * this.column) <= this.mine) {
-      console.log(this.row + " " + this.column + " " + this.mine)
-      console.log(this.row * this.column)
       alert("Reihe * Spalte muss kleiner sein als Anz. Minen")
       return;
     }
@@ -298,7 +290,7 @@ export class GameLauncherComponent implements OnInit {
   }
 
   getProgress() {
-    console.log(this.mine, this.row, this.column)
+    // console.log(this.mine, this.row, this.column)
     let time = this.gameservice.minutes * 60 + this.gameservice.secounds
     let fields = this.row * this.column
     let progress = (time / fields) * 100 / 3
@@ -308,7 +300,6 @@ export class GameLauncherComponent implements OnInit {
   //Prevent overflow of images/numbers
 
   calculateHeight(className:any,value:string){
-    console.log("CalculateHeight",className,value)
     let ele =document.querySelectorAll(className);
     for(let index =0;index < ele.length;index++){
       ele[index].style.maxHeight=value;
