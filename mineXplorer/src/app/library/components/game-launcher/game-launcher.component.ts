@@ -44,6 +44,7 @@ export class GameLauncherComponent implements OnInit {
         flag.classList.add("bi-flag")
         event.currentTarget.appendChild(flag)
         if (this.game?.checkwinner()) {
+          this.gameservice.gameEnd = true;
           this.openDialog(true);
         }
         break
@@ -57,19 +58,23 @@ export class GameLauncherComponent implements OnInit {
   }
 
   clickField(x: number, y: number) {
+    console.log("click on: "+ x + " " + y)
     if(this.firstMove){
       this.game?.generateMines(x,y);
       this.firstMove=false;
+      this.gameservice.resetTimer()
+      this.gameservice.startTimer()
     }
     this.addFieldNumber(x, y);
     if (this.game?.checkwinner()) {
+      this.gameservice.gameEnd = true;
       this.openDialog(true);
     }
     this.game?.getFlaggsNearby(x,y);
     if (this.game?.getStatus(x,y)) {
       this.countUnveiledCells++;
     }
-    this.gameservice.startTimer()
+
     console.log(this.countUnveiledCells)
   }
 
@@ -214,6 +219,8 @@ export class GameLauncherComponent implements OnInit {
     this.game = new Gamelogic(this.row, this.column, this.mine);
     this.gameservice.activeGame = true;
     this.resize(".size");
+
+    this.game.updateGameStatistics()
   }
 
   updateDifficulty() {
@@ -286,6 +293,7 @@ export class GameLauncherComponent implements OnInit {
   //back to game settings
  newGame() {
   this.gameservice.activeGame = false;
+  this.gameservice.resetTimer();
   this.firstMove=true;
   }
 
@@ -293,7 +301,7 @@ export class GameLauncherComponent implements OnInit {
     console.log(this.mine, this.row, this.column)
     let time = this.gameservice.minutes * 60 + this.gameservice.secounds
     let fields = this.row * this.column
-    let progress = (time / fields) * 100
+    let progress = (time / fields) * 100 / 3
     return progress
   }
 

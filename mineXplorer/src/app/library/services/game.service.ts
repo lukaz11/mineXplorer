@@ -18,7 +18,7 @@ export class GameService {
     this.minutes = 0
     this.secounds = 0
     this.restart = true
-
+    this.gameEnd = true
   }
 
   startTimer() {

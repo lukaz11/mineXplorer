@@ -36,14 +36,16 @@
       <div class="form-group col-md-4 flex-box">
         <label>Reihen</label>
         <input class="form-control" type="number" placeholder="Reihen" [(ngModel)]="row" name="row"
-          [disabled]="option!='Custom'" min="2" max="5">
+          [disabled]="option!='Custom'" min="2" max="30">
           <p [ngClass]="[row > 30 || row < 2 ? '' : 'hide']"><small>Die Anzahl der Reihen muss zwischen 2 und 30 liegen</small></p>
+          <p [ngClass]="[row > column ? '' : 'hide']"><small>Die Anzahl der Reihen muss kleiner gleich der Anzahl der Spalten sein</small></p>
       </div>
       <div class="form-group col-md-4 flex-box">
         <label>Spalten</label>
         <input class="form-control" type="number" placeholder="Spalten" [(ngModel)]="column" name="column"
-          [disabled]="option!='Custom'" min="2" max="5">
+          [disabled]="option!='Custom'" min="2" max="30">
           <p [ngClass]="[column > 30 || column < 2 ? '' : 'hide']"><small>Die Anzahl der Reihen muss zwischen 2 und 30 liegen</small></p>
+          <p [ngClass]="[row > column ? '' : 'hide']"><small>Die Anzahl der Spalten muss größer gleich der Anzahl der Reihen sein</small></p>
       </div>
       <!--}-->
     </div>
@@ -86,12 +88,12 @@
     this.gameservice.secounds.toString()}}
   </span>
 
-  <p>Progress: {{getProgress()}} % </p>
-  <p>Minen: {{mine}}</p>
-  <p>Felder: {{row*column}}</p>
-  <p> Verlbleibende Flaggen : {{this.game?.remainingFlags}} </p>
+  <!-- <p>Progress: {{getProgress()}} % </p> -->
+  <p>Verbleibende Minen: {{this.game?.remainingFlags}}</p>
+  <p>Verdeckte Felder: {{this.game?.remainingFields}}</p>
+  <!-- <p> Verlbleibende Flaggen : {{this.game?.remainingFlags}} </p>
   <p> Entdeckte Felder : {{this.game?.fieldsDiscovered}} </p>
-  <p> Verbleibende Felder: {{this.game?.remainingFields}} </p>
+  <p> Verbleibende Felder: {{this.game?.remainingFields}} </p> -->
   <button type="submit" (click)="restartGame()">Zurücksetzen</button>
   <button type="submit" (click)="newGame()">Neues Spiel</button>
   <!-- <button type="submit" class="btn btn-primary" (click)="getProgress()">Test Popup</button> -->
