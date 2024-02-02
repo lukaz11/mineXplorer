@@ -63,7 +63,7 @@
     @for(x of (loopArray(0,column,1));track x;let j=$index){
     <div class="field-row">
       @for(y of (loopArray(0,row,1));track y;let i=$index){
-      <div class="inner-field" (click)="clickField(i,j)" (contextmenu)="setFlag($event,i,j)" id="{{calculateId(i,j)}}"
+      <div class="inner-field size" (click)="clickField(i,j)" (contextmenu)="setFlag($event,i,j)" id="{{calculateId(i,j)}}" (resized)="resize('.size')"
         [ngClass]="this.game?.getStatus(i,j)">
       </div>
       }

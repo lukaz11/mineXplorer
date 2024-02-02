@@ -165,9 +165,13 @@ export class GameLauncherComponent implements OnInit {
   // Wenn das Spiel verloren wurde, deckt alle Felder auf
 
   revealField() {
-    const mine = document.createElement("i")
-    mine.classList.add("bi")
-    mine.classList.add("bi-infinity")
+    const mine = document.createElement("img")
+    let fieldsize=`${(45/this.column).toFixed(2)}vh`
+    console.log("fieldsiez",fieldsize)
+    // mine.classList.add("bi")
+    // mine.classList.add("bi-infinity")
+    mine.setAttribute("src","assets/images/icons/mine.png")
+    mine.classList.add("iconH")
     for (let i = 0; i < this.row; i++) {
       for (let j = 0; j < this.column; j++) {
         if (this.game?.gamefield[i][j].status === 'covered') {
@@ -176,7 +180,10 @@ export class GameLauncherComponent implements OnInit {
           if (this.game?.getMine(i, j)) {
             // console.log('in Mine', el)
             var newMine = mine.cloneNode(true)
+            // console.log("clh",el?.clientHeight)
             el?.appendChild(newMine)
+            this.calculateHeight(".iconH",`${fieldsize}`)
+            // this.resize(".iconH")
           }
           else {
             if ((el !== undefined) && (el !== null) && (this.game?.getNearbyMines(i, j) !== undefined)) {
@@ -195,7 +202,7 @@ export class GameLauncherComponent implements OnInit {
 
   // Erzeugt eine neue Instanz von Gamelogic mit Custom oder vordefinierten Werten
   onSubmit(form: any) {
-    console.log(form)
+    // console.log(form)
     this.updateDifficulty()
     //check if values make sense
     if ((this.row * this.column) <= this.mine) {
@@ -206,6 +213,7 @@ export class GameLauncherComponent implements OnInit {
     }
     this.game = new Gamelogic(this.row, this.column, this.mine);
     this.gameservice.activeGame = true;
+    this.resize(".size");
   }
 
   updateDifficulty() {
@@ -287,6 +295,20 @@ export class GameLauncherComponent implements OnInit {
     let fields = this.row * this.column
     let progress = (time / fields) * 100
     return progress
+  }
+
+  //Prevent overflow of images/numbers
+
+  calculateHeight(className:any,value:string){
+    console.log("CalculateHeight",className,value)
+    let ele =document.querySelectorAll(className);
+    for(let index =0;index < ele.length;index++){
+      ele[index].style.maxHeight=value;
+    }
+  }
+
+  resize(className:any){
+    this.calculateHeight(className,`${(this.row/90).toFixed(2)}vh`)
   }
 
 }
